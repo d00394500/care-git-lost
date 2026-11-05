@@ -1,6 +1,6 @@
 "use strict";
 
-const routes = JSON.parse(document.getElementById("api-routes").textContent);
+let routes = [];
 const byId = id => document.getElementById(id);
 
 for (const name of ["arcade", "explorer"]) {
@@ -159,5 +159,22 @@ byId("request-form").addEventListener("submit", async event => {
     byId("response-output").textContent = error.name === "SyntaxError" ? "Invalid JSON body. Check your syntax and try again." : error.message;
   } finally { button.disabled = false; }
 });
-renderRoutes();
-selectRoute(routes.find(route => route.path === "/api-info") || routes[0]);
+
+async function loadRoutes() {
+  try {
+    const response = await fetch("./api-routes.json");
+    if (!response.ok) throw new Error(`Catalog request failed (${response.status})`);
+    const catalog = await response.json();
+    if (!Array.isArray(catalog)) throw new Error("The endpoint catalog is not a list.");
+
+    routes = catalog;
+    renderRoutes();
+    const initialRoute = routes.find(route => route.path === "/api-info") || routes[0];
+    if (initialRoute) selectRoute(initialRoute);
+  } catch (error) {
+    byId("route-count").textContent = "CATALOG UNAVAILABLE";
+    byId("route-list").textContent = `Couldn't load endpoints: ${error.message}`;
+  }
+}
+
+loadRoutes();
