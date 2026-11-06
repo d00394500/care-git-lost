@@ -64,3 +64,17 @@ class FrontendTests(unittest.TestCase):
         config = (ROOT / "netlify.toml").read_text()
         self.assertIn(dev_server.BACKEND + "/:splat", config)
         self.assertIn('publish = "public"', config)
+
+    
+    def test_pieces_game_integration(self):
+        """Verify the Pieces game is connected to the class API."""
+        html = (ROOT / "public" / "index.html").read_text(encoding="utf-8")
+        javascript = (ROOT / "public" / "arcade.js").read_text(encoding="utf-8")
+
+        self.assertIn('id="pieces-game"', html)
+        self.assertIn('data-game="pieces"', html)
+        self.assertIn('pieces: "/pieces"', javascript)
+        self.assertIn('if (game === "pieces")', javascript)
+        self.assertIn("data.matching_pieces", javascript)
+        self.assertIn("data.payout", javascript)
+        self.assertIn("data.profit", javascript)
