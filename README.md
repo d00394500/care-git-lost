@@ -23,7 +23,8 @@ or direct backend requests with CORS enabled for the frontend domain.
 
 ## Included files
 
-- public/index.html: standalone page and endpoint catalog
+- public/index.html: arcade page
+- public/api-routes.json: endpoint catalog used by the API explorer
 - public/arcade.css: responsive styles
 - public/arcade.js: games, requests, and explorer
 - dev_server.py: local preview and fixed-upstream proxy
@@ -32,11 +33,11 @@ or direct backend requests with CORS enabled for the frontend domain.
 - .github/workflows/test.yaml: tests and JavaScript syntax check
 - .gitignore: generated file exclusions
 
-The endpoint catalog is a snapshot of the Flask source. Update it in index.html
-when routes or methods change. Live responses always come from Render; routes
-absent from the deployed backend show their error. POST requests execute real
-backend operations, including score updates. Render may need time to wake up
-after inactivity. Retry timed-out requests.
+The endpoint catalog is a snapshot of the Flask source. Update
+public/api-routes.json when routes or methods change. Live responses always come
+from Render; routes absent from the deployed backend show their error. POST
+requests execute real backend operations, including score updates. Render may
+need time to wake up after inactivity. Retry timed-out requests.
 
 ## Checks
 

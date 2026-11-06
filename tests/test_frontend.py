@@ -1,7 +1,6 @@
 import io
 import json
 from pathlib import Path
-import re
 import threading
 import unittest
 from unittest.mock import patch
@@ -30,9 +29,13 @@ class FrontendTests(unittest.TestCase):
         for path in ("/", "/arcade.css", "/arcade.js"):
             with urlopen(self.base + path) as response:
                 self.assertEqual(response.status, 200)
+        with urlopen(self.base + "/api-routes.json") as response:
+            self.assertEqual(response.status, 200)
+            catalog = json.load(response)
         html = (ROOT / "public/index.html").read_text(encoding="utf-8")
         self.assertNotIn("{{", html)
-        catalog = json.loads(re.search(r'<script id="api-routes"[^>]*>(.*?)</script>', html, re.S).group(1))
+        self.assertIn('<script src="./arcade.js" defer="">', html)
+        self.assertNotIn("api-routes", html)
         self.assertIn("/roulette-payout", [route["path"] for route in catalog])
         self.assertIn({"path": "/add-score", "methods": ["POST"]}, catalog)
 
