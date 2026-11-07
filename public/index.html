@@ -15,7 +15,7 @@
         <h1>A little luck.<br>A lot of <em>possibility.</em></h1>
         <div class="hero-bottom">
           <p>Take the student-built API for a spin.<br>Pick a game, test your luck, see what comes back.</p>
-<span class="hero-stamp">NO REAL MONEY.<br>JUST REAL REQUESTS.</span>
+          <span class="hero-stamp">NO REAL MONEY.<br>JUST REAL REQUESTS.</span>
         </div>
         <div class="orbit" aria-hidden="true">✳</div>
       </section>
@@ -23,7 +23,7 @@
       <section id="arcade-panel" aria-labelledby="arcade-tab">
         <div class="section-heading">
           <h2>Choose your chance</h2>
-<span>SIX WAYS TO PLAY ↙</span>
+          <span>SEVEN WAYS TO PLAY ↙</span>
         </div>
         <div class="games">
           <article class="game">
@@ -41,7 +41,7 @@
             <p>Pick a color. Give the wheel a whirl.</p>
             <form data-game="roulette">
               <div class="field-row"><label>Color<select name="color"><option value="red">Red</option><option value="black">Black</option><option value="green">Green</option></select></label><label>Play bet<input name="bet" type="number" min="1" max="1000000" step="1" value="10" required=""></label></div>
-<button class="play" type="submit">Spin the wheel <span>→</span></button>
+              <button class="play" type="submit">Spin the wheel <span>→</span></button>
             </form>
             <div class="game-result" role="status" aria-live="polite">The wheel is waiting.</div>
           </article>
@@ -52,7 +52,7 @@
             <p>Chase the match. Celebrate the cherries.</p>
             <form data-game="slots">
               <div class="no-input">Five symbols. Three reels. One spin.</div>
-<button class="play" type="submit">Pull the lever <span>→</span></button>
+              <button class="play" type="submit">Pull the lever <span>→</span></button>
             </form>
             <div class="game-result" role="status" aria-live="polite">Let's see what lines up.</div>
           </article>
@@ -64,8 +64,19 @@
             <form data-game="dice"><label>Your guess<select name="guess"><option value="high">High · 4–6</option><option value="low">Low · 1–3</option></select></label><button class="play" type="submit">Roll the dice <span>→</span></button></form>
             <div class="game-result" role="status" aria-live="polite">A little intuition goes a long way.</div>
           </article>
+          <article class="game" id="pieces-game">
+            <div class="card-top"><span>05 / PIECES OF ROSHAR</span><span>↗</span></div>
+            <div class="game-art dice-art" aria-hidden="true"><span>◈</span><span>◈</span></div>
+            <h3>Pieces of Roshar</h3>
+            <p>Try your luck at Yalb's favorite game. Win spheres by matching pieces!</p>
+            <form data-game="pieces">
+              <div class="no-input">Five matching pieces could make your fortune.</div>
+              <button class="play" type="submit">Play Pieces <span>→</span></button>
+            </form>
+            <div class="game-result" role="status" aria-live="polite">Your next wager awaits.</div>
+          </article>
           <article class="game">
-            <div class="card-top"><span>05 / WATCH YOUR STEP</span><span>↗</span></div>
+            <div class="card-top"><span>06 / WATCH YOUR STEP</span><span>↗</span></div>
             <div class="game-art road-art" aria-hidden="true"><span>↗</span><span>↘</span><span>↗</span></div>
             <h3>Cross the road</h3>
             <p>Choose your jumps. The farther you go, the bigger the payout.</p>
@@ -76,7 +87,7 @@
             <div class="game-result" role="status" aria-live="polite">Pick your path across.</div>
           </article>
           <article class="game">
-            <div class="card-top"><span>06 / KNOW WHEN TO GO</span><span>↗</span></div>
+            <div class="card-top"><span>07 / KNOW WHEN TO GO</span><span>↗</span></div>
             <div class="game-art rocket-art" aria-hidden="true"><span>↗</span><span>🚀</span></div>
             <h3>Rocket ride</h3>
             <p>Set your cash-out point before the rocket crashes.</p>
@@ -88,42 +99,42 @@
           </article>
         </div>
         <aside class="fortune">
-<span class="fortune-mark" aria-hidden="true">✧</span>
+          <span class="fortune-mark" aria-hidden="true">✧</span>
           <div>
-<span class="eyebrow">A WORD FROM THE UNIVERSE</span>
+            <span class="eyebrow">A WORD FROM THE UNIVERSE</span>
             <p id="fortune-text" role="status">Even your fortune deserves a fresh request.</p>
           </div>
-<button id="fortune-button" class="outline">Crack a cookie ↗</button>
+          <button id="fortune-button" class="outline">Crack a cookie ↗</button>
         </aside>
       </section>
       <section id="explorer-panel" aria-labelledby="explorer-tab" hidden="">
         <div class="section-heading">
           <h2>Under the hood</h2>
-<span id="route-count"></span>
+          <span id="route-count"></span>
         </div>
         <p class="explorer-intro">Explore the live API. Select an endpoint, fill in its path, and add query parameters or a JSON body.</p>
         <div class="explorer">
           <aside class="endpoint-browser">
-<label for="route-search">Find an endpoint</label>
-<input id="route-search" type="search" placeholder="Search routes…">
+            <label for="route-search">Find an endpoint</label>
+            <input id="route-search" type="search" placeholder="Search routes…">
             <div id="route-list" class="route-list"></div>
           </aside>
           <div class="request-panel">
             <form id="request-form">
               <div class="request-heading">
-<span id="method-badge" class="method">GET</span>
+                <span id="method-badge" class="method">GET</span>
                 <h3 id="selected-route">Select an endpoint</h3>
               </div>
               <div class="field-row"><label>Method<select id="request-method"></select></label><label class="path-field">Request path<input id="request-path" required="" placeholder="/coinflip/heads"></label></div>
-<label>Query parameters <span class="optional">optional · e.g. bet=10&amp;color=red</span><input id="request-query" placeholder="name=value&amp;another=value"></label>
-<label id="body-label" hidden="">JSON body<textarea id="request-body" rows="5" spellcheck="false">{}</textarea></label>
-<button id="send-request" class="play" type="submit">Send request <span>→</span></button>
+              <label>Query parameters <span class="optional">optional · e.g. bet=10&amp;color=red</span><input id="request-query" placeholder="name=value&amp;another=value"></label>
+              <label id="body-label" hidden="">JSON body<textarea id="request-body" rows="5" spellcheck="false">{}</textarea></label>
+              <button id="send-request" class="play" type="submit">Send request <span>→</span></button>
             </form>
             <div class="response-heading">
               <h4>Response</h4>
-<span id="response-status" role="status">Ready when you are</span>
+              <span id="response-status" role="status">Ready when you are</span>
             </div>
-<pre id="response-output" tabindex="0">Your response will appear here.</pre>
+            <pre id="response-output" tabindex="0">Your response will appear here.</pre>
           </div>
         </div>
       </section>

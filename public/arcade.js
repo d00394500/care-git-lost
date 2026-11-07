@@ -37,6 +37,7 @@ document.querySelectorAll("form[data-game]").forEach(form => {
       roulette: `/roulette-payout?${new URLSearchParams(fields)}`,
       slots: "/api/lucky-slot-machine",
       dice: `/luckyDice?${new URLSearchParams(fields)}`,
+      pieces: "/pieces",
       crossRoad: `/crossRoad?${new URLSearchParams(fields)}`,
       rocketRide: `/rocketRide?${new URLSearchParams(fields)}`
     };
@@ -54,6 +55,12 @@ document.querySelectorAll("form[data-game]").forEach(form => {
       if (game === "dice") {
         won = data.result === "You won!";
         output.textContent = `Rolled a ${data.dice_roll}. ${data.result}`;
+      }
+      if (game === "pieces") {
+        won = data.result === "won";
+        const outcome = won ? "You won!" : "You lost!";
+        const profit = data.profit > 0 ? `+${data.profit}` : data.profit;
+        output.textContent = `${data.player} matched ${data.matching_pieces} pieces. ${outcome} Wager: ${data.wager} spheres. Payout: ${data.payout} spheres. Profit: ${profit} spheres.`;
       }
       if (game === "crossRoad") {
         won = data.win === "you win!";
