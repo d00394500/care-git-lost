@@ -37,7 +37,9 @@ document.querySelectorAll("form[data-game]").forEach(form => {
       roulette: `/roulette-payout?${new URLSearchParams(fields)}`,
       slots: "/api/lucky-slot-machine",
       dice: `/luckyDice?${new URLSearchParams(fields)}`,
-      pieces: "/pieces"
+      pieces: "/pieces",
+      crossRoad: `/crossRoad?${new URLSearchParams(fields)}`,
+      rocketRide: `/rocketRide?${new URLSearchParams(fields)}`
     };
     button.disabled = true;
     card.classList.add("busy");
@@ -56,15 +58,16 @@ document.querySelectorAll("form[data-game]").forEach(form => {
       }
       if (game === "pieces") {
         won = data.result === "won";
-
         const outcome = won ? "You won!" : "You lost!";
         const profit = data.profit > 0 ? `+${data.profit}` : data.profit;
-
-        output.textContent =
-          `${data.player} matched ${data.matching_pieces} pieces. ` +
-          `${outcome} Wager: ${data.wager} spheres. ` +
-          `Payout: ${data.payout} spheres. ` +
-          `Profit: ${profit} spheres.`;
+        output.textContent = `${data.player} matched ${data.matching_pieces} pieces. ${outcome} Wager: ${data.wager} spheres. Payout: ${data.payout} spheres. Profit: ${profit} spheres.`;
+      }
+      if (game === "crossRoad") {
+        won = data.win === "you win!";
+        output.textContent = `${won ? "Safe crossing!" : "You hit the danger point."} ${data.jumps} jump${data.jumps === 1 ? "" : "s"} · ${won ? `${data.multiplier}× multiplier · ` : ""}Payout: ${data.payout} play credits.`;
+      }
+      if (game === "rocketRide") {
+        output.textContent = `${data.crashed ? `Crashed at ${data.crash_point}×.` : `Cashed out at ${data.cash_out}× before the ${data.crash_point}× crash.`} ${data.won ? "You won!" : "No payout this time."} Payout: ${data.payout} · Profit: ${data.profit} play credits.`;
       }
       output.classList.toggle("win", Boolean(won));
     } catch (error) {

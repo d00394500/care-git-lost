@@ -1,168 +1,144 @@
 <!doctype html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>After Hours — IT4200 Arcade</title>
-  <link rel="stylesheet" href="./arcade.css">
-  <script src="./arcade.js" defer=""></script>
-</head>
-
-<body>
-  <header class="topbar"><a class="brand" href="./"><span class="brand-icon">✳</span> AFTER HOURS<span
-        class="course">IT4200 / FALL '26</span></a><a href="https://two026-it4200-fall.onrender.com/"
-      class="api-link">Raw API ↗</a></header>
-  <main>
-    <section class="hero">
-      <div class="eyebrow"><span class="dot"></span> THE CLASS PROJECT, AT PLAY</div>
-      <h1>A little luck.<br>A lot of <em>possibility.</em></h1>
-      <div class="hero-bottom">
-        <p>Take the student-built API for a spin.<br>Pick a game, test your luck, see what comes back.</p>
-        <span class="hero-stamp">NO REAL MONEY.<br>JUST REAL REQUESTS.</span>
-      </div>
-      <div class="orbit" aria-hidden="true">✳</div>
-    </section>
-    <nav class="tabs" aria-label="Sections"><button id="arcade-tab" class="tab active" aria-controls="arcade-panel"
-        aria-pressed="true">01 / The arcade</button><button id="explorer-tab" class="tab" aria-controls="explorer-panel"
-        aria-pressed="false">02 / API explorer</button><span class="tab-note">BUILT BY STUDENTS. POWERED BY
-        FLASK.</span></nav>
-    <section id="arcade-panel" aria-labelledby="arcade-tab">
-      <div class="section-heading">
-        <h2>Choose your chance</h2>
-        <span>FIVE WAYS TO PLAY ↙</span>
-      </div>
-      <div class="games">
-        <article class="game">
-          <div class="card-top"><span>01 / FIFTY–FIFTY</span><span>↗</span></div>
-          <div class="game-art coin-art" aria-hidden="true"><span>H</span><span>T</span></div>
-          <h3>Call the flip</h3>
-          <p>Two sides. One very important decision.</p>
-          <form data-game="coin"><label>Your call<select name="choice">
-                <option value="heads">Heads</option>
-                <option value="tails">Tails</option>
-              </select></label><button class="play" type="submit">Flip the coin <span>→</span></button></form>
-          <div class="game-result" role="status" aria-live="polite">Your next lucky break starts here.</div>
-        </article>
-        <article class="game">
-          <div class="card-top"><span>02 / THE CLASSIC</span><span>↗</span></div>
-          <div class="game-art roulette-art" aria-hidden="true"><span>7</span><span>0</span><span>22</span></div>
-          <h3>Let it ride</h3>
-          <p>Pick a color. Give the wheel a whirl.</p>
-          <form data-game="roulette">
-            <div class="field-row"><label>Color<select name="color">
-                  <option value="red">Red</option>
-                  <option value="black">Black</option>
-                  <option value="green">Green</option>
-                </select></label><label>Play bet<input name="bet" type="number" min="1" max="1000000" step="1"
-                  value="10" required=""></label></div>
-            <button class="play" type="submit">Spin the wheel <span>→</span></button>
-          </form>
-          <div class="game-result" role="status" aria-live="polite">The wheel is waiting.</div>
-        </article>
-        <article class="game">
-          <div class="card-top"><span>03 / THREE OF A KIND</span><span>↗</span></div>
-          <div class="game-art slot-art" aria-hidden="true"><span>7</span><span>7</span><span>7</span></div>
-          <h3>Lucky little slots</h3>
-          <p>Chase the match. Celebrate the cherries.</p>
-          <form data-game="slots">
-            <div class="no-input">Five symbols. Three reels. One spin.</div>
-            <button class="play" type="submit">Pull the lever <span>→</span></button>
-          </form>
-          <div class="game-result" role="status" aria-live="polite">Let's see what lines up.</div>
-        </article>
-        <article class="game">
-          <div class="card-top"><span>04 / TRUST YOUR GUT</span><span>↗</span></div>
-          <div class="game-art dice-art" aria-hidden="true"><span>⚄</span><span>⚂</span></div>
-          <h3>High hopes</h3>
-          <p>One die. Will it land high or low?</p>
-          <form data-game="dice"><label>Your guess<select name="guess">
-                <option value="high">High · 4–6</option>
-                <option value="low">Low · 1–3</option>
-              </select></label><button class="play" type="submit">Roll the dice <span>→</span></button></form>
-          <div class="game-result" role="status" aria-live="polite">A little intuition goes a long way.</div>
-        </article>
-        <article class="game" id="pieces-game">
-          <div class="card-top">
-            <span>05 / PIECES OF ROSHAR</span>
-            <span>↗</span>
-          </div>
-
-          <div class="game-art dice-art" aria-hidden="true">
-            <span>◈</span>
-            <span>◈</span>
-          </div>
-
-          <h3>Pieces of Roshar</h3>
-
-          <p>
-            Try your luck at Yalb's favorite game.
-            Win spheres by matching pieces!
-          </p>
-
-          <form data-game="pieces">
-            <div class="no-input">
-              Five matching pieces could make your fortune.
-            </div>
-
-            <button class="play" type="submit">
-              Play Pieces <span>→</span>
-            </button>
-          </form>
-
-          <div class="game-result" role="status" aria-live="polite">
-            Your next wager awaits.
-          </div>
-        </article>
-      </div>
-      <aside class="fortune">
-        <span class="fortune-mark" aria-hidden="true">✧</span>
-        <div>
-          <span class="eyebrow">A WORD FROM THE UNIVERSE</span>
-          <p id="fortune-text" role="status">Even your fortune deserves a fresh request.</p>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>After Hours — IT4200 Arcade</title>
+    <link rel="stylesheet" href="./arcade.css">
+    <script src="./arcade.js" defer=""></script>
+  </head>
+  <body>
+    <header class="topbar"><a class="brand" href="./"><span class="brand-icon">✳</span> AFTER HOURS<span class="course">IT4200 / FALL '26</span></a><a href="https://two026-it4200-fall.onrender.com/" class="api-link">Raw API ↗</a></header>
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span class="dot"></span> THE CLASS PROJECT, AT PLAY</div>
+        <h1>A little luck.<br>A lot of <em>possibility.</em></h1>
+        <div class="hero-bottom">
+          <p>Take the student-built API for a spin.<br>Pick a game, test your luck, see what comes back.</p>
+          <span class="hero-stamp">NO REAL MONEY.<br>JUST REAL REQUESTS.</span>
         </div>
-        <button id="fortune-button" class="outline">Crack a cookie ↗</button>
-      </aside>
-    </section>
-    <section id="explorer-panel" aria-labelledby="explorer-tab" hidden="">
-      <div class="section-heading">
-        <h2>Under the hood</h2>
-        <span id="route-count"></span>
-      </div>
-      <p class="explorer-intro">Explore the live API. Select an endpoint, fill in its path, and add query parameters or
-        a JSON body.</p>
-      <div class="explorer">
-        <aside class="endpoint-browser">
-          <label for="route-search">Find an endpoint</label>
-          <input id="route-search" type="search" placeholder="Search routes…">
-          <div id="route-list" class="route-list"></div>
+        <div class="orbit" aria-hidden="true">✳</div>
+      </section>
+      <nav class="tabs" aria-label="Sections"><button id="arcade-tab" class="tab active" aria-controls="arcade-panel" aria-pressed="true">01 / The arcade</button><button id="explorer-tab" class="tab" aria-controls="explorer-panel" aria-pressed="false">02 / API explorer</button><span class="tab-note">BUILT BY STUDENTS. POWERED BY FLASK.</span></nav>
+      <section id="arcade-panel" aria-labelledby="arcade-tab">
+        <div class="section-heading">
+          <h2>Choose your chance</h2>
+          <span>SEVEN WAYS TO PLAY ↙</span>
+        </div>
+        <div class="games">
+          <article class="game">
+            <div class="card-top"><span>01 / FIFTY–FIFTY</span><span>↗</span></div>
+            <div class="game-art coin-art" aria-hidden="true"><span>H</span><span>T</span></div>
+            <h3>Call the flip</h3>
+            <p>Two sides. One very important decision.</p>
+            <form data-game="coin"><label>Your call<select name="choice"><option value="heads">Heads</option><option value="tails">Tails</option></select></label><button class="play" type="submit">Flip the coin <span>→</span></button></form>
+            <div class="game-result" role="status" aria-live="polite">Your next lucky break starts here.</div>
+          </article>
+          <article class="game">
+            <div class="card-top"><span>02 / THE CLASSIC</span><span>↗</span></div>
+            <div class="game-art roulette-art" aria-hidden="true"><span>7</span><span>0</span><span>22</span></div>
+            <h3>Let it ride</h3>
+            <p>Pick a color. Give the wheel a whirl.</p>
+            <form data-game="roulette">
+              <div class="field-row"><label>Color<select name="color"><option value="red">Red</option><option value="black">Black</option><option value="green">Green</option></select></label><label>Play bet<input name="bet" type="number" min="1" max="1000000" step="1" value="10" required=""></label></div>
+              <button class="play" type="submit">Spin the wheel <span>→</span></button>
+            </form>
+            <div class="game-result" role="status" aria-live="polite">The wheel is waiting.</div>
+          </article>
+          <article class="game">
+            <div class="card-top"><span>03 / THREE OF A KIND</span><span>↗</span></div>
+            <div class="game-art slot-art" aria-hidden="true"><span>7</span><span>7</span><span>7</span></div>
+            <h3>Lucky little slots</h3>
+            <p>Chase the match. Celebrate the cherries.</p>
+            <form data-game="slots">
+              <div class="no-input">Five symbols. Three reels. One spin.</div>
+              <button class="play" type="submit">Pull the lever <span>→</span></button>
+            </form>
+            <div class="game-result" role="status" aria-live="polite">Let's see what lines up.</div>
+          </article>
+          <article class="game">
+            <div class="card-top"><span>04 / TRUST YOUR GUT</span><span>↗</span></div>
+            <div class="game-art dice-art" aria-hidden="true"><span>⚄</span><span>⚂</span></div>
+            <h3>High hopes</h3>
+            <p>One die. Will it land high or low?</p>
+            <form data-game="dice"><label>Your guess<select name="guess"><option value="high">High · 4–6</option><option value="low">Low · 1–3</option></select></label><button class="play" type="submit">Roll the dice <span>→</span></button></form>
+            <div class="game-result" role="status" aria-live="polite">A little intuition goes a long way.</div>
+          </article>
+          <article class="game" id="pieces-game">
+            <div class="card-top"><span>05 / PIECES OF ROSHAR</span><span>↗</span></div>
+            <div class="game-art dice-art" aria-hidden="true"><span>◈</span><span>◈</span></div>
+            <h3>Pieces of Roshar</h3>
+            <p>Try your luck at Yalb's favorite game. Win spheres by matching pieces!</p>
+            <form data-game="pieces">
+              <div class="no-input">Five matching pieces could make your fortune.</div>
+              <button class="play" type="submit">Play Pieces <span>→</span></button>
+            </form>
+            <div class="game-result" role="status" aria-live="polite">Your next wager awaits.</div>
+          </article>
+          <article class="game">
+            <div class="card-top"><span>06 / WATCH YOUR STEP</span><span>↗</span></div>
+            <div class="game-art road-art" aria-hidden="true"><span>↗</span><span>↘</span><span>↗</span></div>
+            <h3>Cross the road</h3>
+            <p>Choose your jumps. The farther you go, the bigger the payout.</p>
+            <form data-game="crossRoad">
+              <div class="field-row"><label>Play bet<input name="bet" type="number" min="1" step="1" value="10" required=""></label><label>Jumps<select name="jumps"><option value="1">1 jump</option><option value="2">2 jumps</option><option value="3">3 jumps</option><option value="4">4 jumps</option><option value="5">5 jumps</option><option value="6">6 jumps</option><option value="7">7 jumps</option><option value="8">8 jumps</option><option value="9">9 jumps</option><option value="10">10 jumps</option></select></label></div>
+              <button class="play" type="submit">Make your move <span>→</span></button>
+            </form>
+            <div class="game-result" role="status" aria-live="polite">Pick your path across.</div>
+          </article>
+          <article class="game">
+            <div class="card-top"><span>07 / KNOW WHEN TO GO</span><span>↗</span></div>
+            <div class="game-art rocket-art" aria-hidden="true"><span>↗</span><span>🚀</span></div>
+            <h3>Rocket ride</h3>
+            <p>Set your cash-out point before the rocket crashes.</p>
+            <form data-game="rocketRide">
+              <div class="field-row"><label>Play bet<input name="bet" type="number" min="0" step="0.01" value="10" required=""></label><label>Cash out at<input name="cash_out" type="number" min="0" max="100" step="0.01" value="2" required=""></label></div>
+              <button class="play" type="submit">Launch the rocket <span>→</span></button>
+            </form>
+            <div class="game-result" role="status" aria-live="polite">Choose a cash-out point and launch.</div>
+          </article>
+        </div>
+        <aside class="fortune">
+          <span class="fortune-mark" aria-hidden="true">✧</span>
+          <div>
+            <span class="eyebrow">A WORD FROM THE UNIVERSE</span>
+            <p id="fortune-text" role="status">Even your fortune deserves a fresh request.</p>
+          </div>
+          <button id="fortune-button" class="outline">Crack a cookie ↗</button>
         </aside>
-        <div class="request-panel">
-          <form id="request-form">
-            <div class="request-heading">
-              <span id="method-badge" class="method">GET</span>
-              <h3 id="selected-route">Select an endpoint</h3>
-            </div>
-            <div class="field-row"><label>Method<select id="request-method"></select></label><label
-                class="path-field">Request path<input id="request-path" required=""
-                  placeholder="/coinflip/heads"></label></div>
-            <label>Query parameters <span class="optional">optional · e.g. bet=10&amp;color=red</span><input
-                id="request-query" placeholder="name=value&amp;another=value"></label>
-            <label id="body-label" hidden="">JSON body<textarea id="request-body" rows="5"
-                spellcheck="false">{}</textarea></label>
-            <button id="send-request" class="play" type="submit">Send request <span>→</span></button>
-          </form>
-          <div class="response-heading">
-            <h4>Response</h4>
-            <span id="response-status" role="status">Ready when you are</span>
-          </div>
-          <pre id="response-output" tabindex="0">Your response will appear here.</pre>
+      </section>
+      <section id="explorer-panel" aria-labelledby="explorer-tab" hidden="">
+        <div class="section-heading">
+          <h2>Under the hood</h2>
+          <span id="route-count"></span>
         </div>
-      </div>
-    </section>
-    <footer><span>AFTER HOURS <span class="footer-star">✳</span> A CLASSROOM EXPERIMENT</span><span>IT4200 · FALL
-        2026</span></footer>
-  </main>
-</body>
-
+        <p class="explorer-intro">Explore the live API. Select an endpoint, fill in its path, and add query parameters or a JSON body.</p>
+        <div class="explorer">
+          <aside class="endpoint-browser">
+            <label for="route-search">Find an endpoint</label>
+            <input id="route-search" type="search" placeholder="Search routes…">
+            <div id="route-list" class="route-list"></div>
+          </aside>
+          <div class="request-panel">
+            <form id="request-form">
+              <div class="request-heading">
+                <span id="method-badge" class="method">GET</span>
+                <h3 id="selected-route">Select an endpoint</h3>
+              </div>
+              <div class="field-row"><label>Method<select id="request-method"></select></label><label class="path-field">Request path<input id="request-path" required="" placeholder="/coinflip/heads"></label></div>
+              <label>Query parameters <span class="optional">optional · e.g. bet=10&amp;color=red</span><input id="request-query" placeholder="name=value&amp;another=value"></label>
+              <label id="body-label" hidden="">JSON body<textarea id="request-body" rows="5" spellcheck="false">{}</textarea></label>
+              <button id="send-request" class="play" type="submit">Send request <span>→</span></button>
+            </form>
+            <div class="response-heading">
+              <h4>Response</h4>
+              <span id="response-status" role="status">Ready when you are</span>
+            </div>
+            <pre id="response-output" tabindex="0">Your response will appear here.</pre>
+          </div>
+        </div>
+      </section>
+      <footer><span>AFTER HOURS <span class="footer-star">✳</span> A CLASSROOM EXPERIMENT</span><span>IT4200 · FALL 2026</span></footer>
+    </main>
+  </body>
 </html>

@@ -1,7 +1,8 @@
 # After Hours arcade
 
 Standalone frontend for https://two026-it4200-fall.onrender.com/.
-Includes coin flip, roulette, slots, dice, fortunes, and an API explorer.
+Includes coin flip, roulette, slots, dice, Cross the road, Rocket ride,
+fortunes, and an API explorer.
 Bets are simulated; no wallet or real money is involved.
 
 ## Local preview
