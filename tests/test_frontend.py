@@ -39,6 +39,15 @@ class FrontendTests(unittest.TestCase):
         self.assertIn("/roulette-payout", [route["path"] for route in catalog])
         self.assertIn({"path": "/add-score", "methods": ["POST"]}, catalog)
 
+    def test_arcade_includes_cross_road_and_rocket_ride(self):
+        html = (ROOT / "public/index.html").read_text(encoding="utf-8")
+        script = (ROOT / "public/arcade.js").read_text(encoding="utf-8")
+        self.assertIn('<form data-game="crossRoad">', html)
+        self.assertIn('<form data-game="rocketRide">', html)
+        self.assertIn('name="cash_out" type="number" min="0" max="100"', html)
+        self.assertIn('crossRoad: `/crossRoad?${new URLSearchParams(fields)}`', script)
+        self.assertIn('rocketRide: `/rocketRide?${new URLSearchParams(fields)}`', script)
+
     def test_fixed_upstream(self):
         self.assertEqual(dev_server.upstream_url("/api/coinflip/heads"), dev_server.BACKEND + "/coinflip/heads")
         self.assertTrue(dev_server.upstream_url("/api//evil.example/path").startswith(dev_server.BACKEND + "/"))

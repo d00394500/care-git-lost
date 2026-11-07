@@ -36,7 +36,9 @@ document.querySelectorAll("form[data-game]").forEach(form => {
       coin: `/coinflip/${encodeURIComponent(fields.get("choice"))}`,
       roulette: `/roulette-payout?${new URLSearchParams(fields)}`,
       slots: "/api/lucky-slot-machine",
-      dice: `/luckyDice?${new URLSearchParams(fields)}`
+      dice: `/luckyDice?${new URLSearchParams(fields)}`,
+      crossRoad: `/crossRoad?${new URLSearchParams(fields)}`,
+      rocketRide: `/rocketRide?${new URLSearchParams(fields)}`
     };
     button.disabled = true;
     card.classList.add("busy");
@@ -52,6 +54,13 @@ document.querySelectorAll("form[data-game]").forEach(form => {
       if (game === "dice") {
         won = data.result === "You won!";
         output.textContent = `Rolled a ${data.dice_roll}. ${data.result}`;
+      }
+      if (game === "crossRoad") {
+        won = data.win === "you win!";
+        output.textContent = `${won ? "Safe crossing!" : "You hit the danger point."} ${data.jumps} jump${data.jumps === 1 ? "" : "s"} · ${won ? `${data.multiplier}× multiplier · ` : ""}Payout: ${data.payout} play credits.`;
+      }
+      if (game === "rocketRide") {
+        output.textContent = `${data.crashed ? `Crashed at ${data.crash_point}×.` : `Cashed out at ${data.cash_out}× before the ${data.crash_point}× crash.`} ${data.won ? "You won!" : "No payout this time."} Payout: ${data.payout} · Profit: ${data.profit} play credits.`;
       }
       output.classList.toggle("win", Boolean(won));
     } catch (error) {
