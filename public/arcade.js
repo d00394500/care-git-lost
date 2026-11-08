@@ -24,6 +24,23 @@ async function apiRequest(path, options = {}) {
   return { response, data };
 }
 
+async function loadApiSnapshot() {
+  const status = byId("api-snapshot-status");
+  const text = byId("api-snapshot-text");
+  try {
+    const { response, data } = await apiRequest("/api-info");
+    if (!response.ok) throw new Error(`API returned ${response.status}`);
+    const summary = typeof data === "string" ? data : JSON.stringify(data);
+    text.textContent = summary.length > 180 ? `${summary.slice(0, 177)}…` : summary;
+    status.textContent = "ONLINE";
+    byId("api-snapshot-dot").classList.add("online");
+  } catch (error) {
+    text.textContent = "The class API is unavailable right now. Games will retry when you play.";
+    status.textContent = "OFFLINE";
+    status.classList.add("offline");
+  }
+}
+
 document.querySelectorAll("form[data-game]").forEach(form => {
   form.addEventListener("submit", async event => {
     event.preventDefault();
@@ -194,3 +211,4 @@ async function loadRoutes() {
 }
 
 loadRoutes();
+loadApiSnapshot();
