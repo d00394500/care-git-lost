@@ -80,23 +80,42 @@ async function playCrossRoad(card, action) {
       return;
     }
 
-    if (data.status === "active" && data.result === "safe") {
+    let resultData = data;
+    if (action === "jump" && data.status === "active" && data.result === "safe" && data.jumps >= 10) {
       card.dataset.safeJumps = String(data.jumps);
+      output.textContent = "Ten safe jumps! Automatically cashing out…";
+      const cashoutQuery = new URLSearchParams({ action: "cashout", round_id: card.dataset.roundId });
+      const cashout = await apiRequest(`/crossRoad?${cashoutQuery}`);
+      if (!cashout.response.ok) {
+        if (cashout.response.status === 404 || cashout.response.status === 410) {
+          delete card.dataset.roundId;
+          delete card.dataset.safeJumps;
+          form.hidden = false;
+          controls.hidden = true;
+        }
+        throw new Error(cashout.data.error || `Request failed (${cashout.response.status})`);
+      }
+      resultData = cashout.data;
+    }
+
+    if (resultData.status === "active" && resultData.result === "safe") {
+      card.dataset.safeJumps = String(resultData.jumps);
+      controls.querySelector('[data-cross-road-action="jump"]').disabled = resultData.jumps >= 10;
       controls.querySelector('[data-cross-road-action="cashout"]').disabled = false;
-      output.textContent = `Safe jump ${data.jumps}! Current multiplier: ${data.multiplier}× · Potential payout: ${data.potential_payout} play credits.`;
+      output.textContent = `Safe jump ${resultData.jumps}! Current multiplier: ${resultData.multiplier}× · Potential payout: ${resultData.potential_payout} play credits.`;
       return;
     }
 
-    if (data.status === "completed") {
+    if (resultData.status === "completed") {
       delete card.dataset.roundId;
       delete card.dataset.safeJumps;
       form.hidden = false;
       controls.hidden = true;
-      if (data.result === "lost") {
-        output.textContent = `You hit the danger point on jump ${data.jumps}. Payout: ${data.payout} · Loss: ${Math.abs(data.profit)} play credits.`;
-      } else if (data.result === "cashed_out") {
-        output.textContent = `Cashed out after ${data.jumps} safe jump${data.jumps === 1 ? "" : "s"} at ${data.multiplier}×. Payout: ${data.payout} · Profit: ${data.profit} play credits.`;
-        output.classList.toggle("win", data.profit >= 0);
+      if (resultData.result === "lost") {
+        output.textContent = `You hit the danger point on jump ${resultData.jumps}. Payout: ${resultData.payout} · Loss: ${Math.abs(resultData.profit)} play credits.`;
+      } else if (resultData.result === "cashed_out") {
+        output.textContent = `Cashed out after ${resultData.jumps} safe jump${resultData.jumps === 1 ? "" : "s"} at ${resultData.multiplier}×. Payout: ${resultData.payout} · Profit: ${resultData.profit} play credits.`;
+        output.classList.toggle("win", resultData.profit >= 0);
       } else {
         throw new Error("The API returned an unknown round result.");
       }
@@ -110,8 +129,10 @@ async function playCrossRoad(card, action) {
   } finally {
     startButton.disabled = false;
     actionButtons.forEach(gameButton => {
+      const safeJumps = Number(card.dataset.safeJumps || 0);
       gameButton.disabled = gameButton.dataset.crossRoadAction === "cashout"
-        && Number(card.dataset.safeJumps || 0) === 0;
+        ? safeJumps === 0
+        : safeJumps >= 10;
     });
     card.classList.remove("busy");
   }
