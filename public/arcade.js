@@ -41,10 +41,90 @@ async function loadApiSnapshot() {
   }
 }
 
+async function playCrossRoad(card, action) {
+  const form = card.querySelector('form[data-game="crossRoad"]');
+  const output = card.querySelector(".game-result");
+  const controls = card.querySelector(".cross-road-controls");
+  const startButton = form.querySelector("button");
+  const actionButtons = [...controls.querySelectorAll("button")];
+  const roundId = card.dataset.roundId;
+  const parameters = action === "start"
+    ? { action, bet: new FormData(form).get("bet") }
+    : { action, round_id: roundId };
+
+  [startButton, ...actionButtons].forEach(gameButton => { gameButton.disabled = true; });
+  card.classList.add("busy");
+  output.className = "game-result";
+  output.textContent = action === "start" ? "Opening a crossing…" : action === "jump" ? "Taking a careful step…" : "Cashing out…";
+
+  try {
+    const query = new URLSearchParams(parameters);
+    const { response, data } = await apiRequest(`/crossRoad?${query}`);
+    if (!response.ok) {
+      if (response.status === 404 || response.status === 410) {
+        delete card.dataset.roundId;
+        delete card.dataset.safeJumps;
+        form.hidden = false;
+        controls.hidden = true;
+      }
+      throw new Error(data.error || `Request failed (${response.status})`);
+    }
+
+    if (action === "start") {
+      if (!data.round_id || data.status !== "active") throw new Error("The API returned an invalid round.");
+      card.dataset.roundId = data.round_id;
+      card.dataset.safeJumps = "0";
+      form.hidden = true;
+      controls.hidden = false;
+      output.textContent = "Round started. Jump to keep going, or cash out after your first safe jump.";
+      return;
+    }
+
+    if (data.status === "active" && data.result === "safe") {
+      card.dataset.safeJumps = String(data.jumps);
+      controls.querySelector('[data-cross-road-action="cashout"]').disabled = false;
+      output.textContent = `Safe jump ${data.jumps}! Current multiplier: ${data.multiplier}× · Potential payout: ${data.potential_payout} play credits.`;
+      return;
+    }
+
+    if (data.status === "completed") {
+      delete card.dataset.roundId;
+      delete card.dataset.safeJumps;
+      form.hidden = false;
+      controls.hidden = true;
+      if (data.result === "lost") {
+        output.textContent = `You hit the danger point on jump ${data.jumps}. Payout: ${data.payout} · Loss: ${Math.abs(data.profit)} play credits.`;
+      } else if (data.result === "cashed_out") {
+        output.textContent = `Cashed out after ${data.jumps} safe jump${data.jumps === 1 ? "" : "s"} at ${data.multiplier}×. Payout: ${data.payout} · Profit: ${data.profit} play credits.`;
+        output.classList.toggle("win", data.profit >= 0);
+      } else {
+        throw new Error("The API returned an unknown round result.");
+      }
+      return;
+    }
+
+    throw new Error("The API returned an invalid round state.");
+  } catch (error) {
+    output.classList.add("error");
+    output.textContent = error.name === "TimeoutError" ? "The backend is taking a while to wake up. Try again." : `Couldn't play: ${error.message}`;
+  } finally {
+    startButton.disabled = false;
+    actionButtons.forEach(gameButton => {
+      gameButton.disabled = gameButton.dataset.crossRoadAction === "cashout"
+        && Number(card.dataset.safeJumps || 0) === 0;
+    });
+    card.classList.remove("busy");
+  }
+}
+
 document.querySelectorAll("form[data-game]").forEach(form => {
   form.addEventListener("submit", async event => {
     event.preventDefault();
     const card = form.closest(".game");
+    if (form.dataset.game === "crossRoad") {
+      await playCrossRoad(card, "start");
+      return;
+    }
     const output = card.querySelector(".game-result");
     const button = form.querySelector("button");
     const fields = new FormData(form);
@@ -55,7 +135,6 @@ document.querySelectorAll("form[data-game]").forEach(form => {
       slots: "/api/lucky-slot-machine",
       dice: `/luckyDice?${new URLSearchParams(fields)}`,
       pieces: "/pieces",
-      crossRoad: `/crossRoad?${new URLSearchParams(fields)}`,
       rocketRide: `/rocketRide?${new URLSearchParams(fields)}`
     };
     button.disabled = true;
@@ -79,10 +158,6 @@ document.querySelectorAll("form[data-game]").forEach(form => {
         const profit = data.profit > 0 ? `+${data.profit}` : data.profit;
         output.textContent = `${data.player} matched ${data.matching_pieces} pieces. ${outcome} Wager: ${data.wager} spheres. Payout: ${data.payout} spheres. Profit: ${profit} spheres.`;
       }
-      if (game === "crossRoad") {
-        won = data.win === "you win!";
-        output.textContent = `${won ? "Safe crossing!" : "You hit the danger point."} ${data.jumps} jump${data.jumps === 1 ? "" : "s"} · ${won ? `${data.multiplier}× multiplier · ` : ""}Payout: ${data.payout} play credits.`;
-      }
       if (game === "rocketRide") {
         output.textContent = `${data.crashed ? `Crashed at ${data.crash_point}×.` : `Cashed out at ${data.cash_out}× before the ${data.crash_point}× crash.`} ${data.won ? "You won!" : "No payout this time."} Payout: ${data.payout} · Profit: ${data.profit} play credits.`;
       }
@@ -94,6 +169,13 @@ document.querySelectorAll("form[data-game]").forEach(form => {
       button.disabled = false;
       card.classList.remove("busy");
     }
+  });
+});
+
+document.querySelectorAll("[data-cross-road-action]").forEach(button => {
+  button.addEventListener("click", () => {
+    const card = button.closest(".game");
+    playCrossRoad(card, button.dataset.crossRoadAction);
   });
 });
 

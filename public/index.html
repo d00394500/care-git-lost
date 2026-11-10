@@ -86,9 +86,13 @@
             <h3>Cross the road</h3>
             <p>Choose your jumps. The farther you go, the bigger the payout.</p>
             <form data-game="crossRoad">
-              <div class="field-row"><label>Play bet<input name="bet" type="number" min="1" step="1" value="10" required=""></label><label>Jumps<select name="jumps"><option value="1">1 jump</option><option value="2">2 jumps</option><option value="3">3 jumps</option><option value="4">4 jumps</option><option value="5">5 jumps</option><option value="6">6 jumps</option><option value="7">7 jumps</option><option value="8">8 jumps</option><option value="9">9 jumps</option><option value="10">10 jumps</option></select></label></div>
-              <button class="play" type="submit">Make your move <span>→</span></button>
+              <label>Play bet<input name="bet" type="number" min="0" step="1" value="10" required=""></label>
+              <button class="play" type="submit">Start crossing <span>→</span></button>
             </form>
+            <div class="cross-road-controls" hidden="">
+              <button class="play" type="button" data-cross-road-action="jump">Jump <span>→</span></button>
+              <button class="play" type="button" data-cross-road-action="cashout" disabled="">Cash out <span>↗</span></button>
+            </div>
             <div class="game-result" role="status" aria-live="polite">Pick your path across.</div>
           </article>
           <article class="game">

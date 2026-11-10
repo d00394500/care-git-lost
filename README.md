@@ -4,6 +4,7 @@ Standalone frontend for https://two026-it4200-fall.onrender.com/.
 Includes coin flip, roulette, slots, dice, Cross the road, Rocket ride,
 fortunes, and an API explorer.
 Bets are simulated; no wallet or real money is involved.
+Cross the road is round-based: start a round, jump, then cash out after a safe jump.
 
 ## Local preview
 
