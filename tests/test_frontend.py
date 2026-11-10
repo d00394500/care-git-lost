@@ -45,7 +45,11 @@ class FrontendTests(unittest.TestCase):
         self.assertIn('<form data-game="crossRoad">', html)
         self.assertIn('<form data-game="rocketRide">', html)
         self.assertIn('name="cash_out" type="number" min="0" max="100"', html)
-        self.assertIn('crossRoad: `/crossRoad?${new URLSearchParams(fields)}`', script)
+        self.assertIn('data-cross-road-action="jump"', html)
+        self.assertIn('data-cross-road-action="cashout"', html)
+        self.assertIn('action, bet: new FormData(form).get("bet")', script)
+        self.assertIn('{ action, round_id: roundId }', script)
+        self.assertIn('controls.querySelector(\'[data-cross-road-action="cashout"]\').disabled = false', script)
         self.assertIn('rocketRide: `/rocketRide?${new URLSearchParams(fields)}`', script)
 
     def test_fixed_upstream(self):
